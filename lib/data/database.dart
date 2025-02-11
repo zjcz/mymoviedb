@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'tables.dart';
 
 part 'database.g.dart';
@@ -34,23 +35,25 @@ class MovieSearchCriteria {
 @DriftDatabase(tables: [Movies, Locations])
 class MovieDatabase extends _$MovieDatabase {
   MovieDatabase() : super(_openConnection());
-  
+
   // Constructor for testing with in-memory database
-  MovieDatabase.forTesting(QueryExecutor e) : super(e);
+  MovieDatabase.forTesting(super.e);
 
   @override
   int get schemaVersion => 1;
 
   // Movie Operations
-  Future<List<Movie>> getAllMovies() => select(movies).get();
-  
-  Future<Movie> getMovie(int id) =>
-      (select(movies)..where((m) => m.id.equals(id))).getSingle();
-  
+  Stream<List<Movie>> getAllMovies() => select(movies).watch();
+
+  Future<Movie?> getMovie(int id) =>
+      (select(movies)..where((m) => m.id.equals(id))).getSingleOrNull();
+
   Future<int> insertMovie(MoviesCompanion movie) => into(movies).insert(movie);
-  
-  Future<bool> updateMovie(Movie movie) => update(movies).replace(movie);
-  
+
+  Future<bool> updateMovie(Movie movie) {
+    return update(movies).replace(movie);
+  }
+
   Future<int> deleteMovie(int id) =>
       (delete(movies)..where((m) => m.id.equals(id))).go();
 
@@ -90,43 +93,44 @@ class MovieDatabase extends _$MovieDatabase {
     Expression<bool> whereClause = const Constant(true);
 
     if (criteria.titleQuery != null && criteria.titleQuery!.isNotEmpty) {
-      whereClause = whereClause & 
+      whereClause = whereClause &
           movies.title.lower().contains(criteria.titleQuery!.toLowerCase());
     }
 
     if (criteria.directorQuery != null && criteria.directorQuery!.isNotEmpty) {
-      whereClause = whereClause & 
-          movies.director.lower().contains(criteria.directorQuery!.toLowerCase());
+      whereClause = whereClause &
+          movies.director
+              .lower()
+              .contains(criteria.directorQuery!.toLowerCase());
     }
 
     if (criteria.genreQuery != null && criteria.genreQuery!.isNotEmpty) {
-      whereClause = whereClause & 
+      whereClause = whereClause &
           movies.genre.lower().contains(criteria.genreQuery!.toLowerCase());
     }
 
     if (criteria.ageRating != null) {
-      whereClause = whereClause & 
-          movies.ageRating.equals(criteria.ageRating!.name);
+      whereClause =
+          whereClause & movies.ageRating.equals(criteria.ageRating!.name);
     }
 
     if (criteria.format != null) {
-      whereClause = whereClause & 
-          movies.format.equals(criteria.format!.name);
+      whereClause = whereClause & movies.format.equals(criteria.format!.name);
     }
 
     if (criteria.locationId != null) {
-      whereClause = whereClause & 
-          movies.locationId.isNotNull() & 
+      whereClause = whereClause &
+          movies.locationId.isNotNull() &
           movies.locationId.equalsExp(Variable(criteria.locationId));
     }
 
     if (criteria.fromYear != null) {
-      whereClause = whereClause & 
+      whereClause = whereClause &
           movies.releaseYear.isBiggerOrEqualValue(criteria.fromYear!);
     }
 
     if (criteria.toYear != null) {
-      whereClause = whereClause & 
+      whereClause = whereClause &
           movies.releaseYear.isSmallerOrEqualValue(criteria.toYear!);
     }
 
@@ -135,10 +139,10 @@ class MovieDatabase extends _$MovieDatabase {
   }
 
   // Location Operations
-  Future<List<Location>> getAllLocations() => select(locations).get();
+  Stream<List<Location>> getAllLocations() => select(locations).watch();
 
-  Future<Location> getLocation(int id) =>
-      (select(locations)..where((l) => l.id.equals(id))).getSingle();
+  Future<Location?> getLocation(int id) =>
+      (select(locations)..where((l) => l.id.equals(id))).getSingleOrNull();
 
   Future<int> insertLocation(LocationsCompanion location) =>
       into(locations).insert(location);
@@ -152,6 +156,18 @@ class MovieDatabase extends _$MovieDatabase {
   // Get movies by location
   Future<List<Movie>> getMoviesByLocation(int locationId) =>
       (select(movies)..where((m) => m.locationId.equals(locationId))).get();
+
+  // Provider for the database service
+  // Note: Declared here as Provider.  If the database connection was to change
+  // at some point (for example the database connection is reset and
+  // reinitialised after a backup / restore) we would need to declare this as a
+  // StateProvider instead.
+  static final Provider<MovieDatabase> provider = Provider((ref) {
+    final database = MovieDatabase();
+    ref.onDispose(database.close);
+
+    return database;
+  });
 }
 
 LazyDatabase _openConnection() {
