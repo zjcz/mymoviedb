@@ -30,7 +30,7 @@ void main() {
   group('MovieController Tests', () {
     test('build returns empty list initially', () async {
       when(mockDb.getAllMovies()).thenAnswer((_) => Stream.value([]));
-      
+
       final movies = await container.read(movieControllerProvider.future);
       expect(movies, isEmpty);
       verify(mockDb.getAllMovies()).called(1);
@@ -38,21 +38,44 @@ void main() {
 
     test('addMovie calls database insert', () async {
       final controller = container.read(movieControllerProvider.notifier);
-      
-      final movie = MoviesCompanion.insert(
-        title: 'Test Movie',
-        director: 'Test Director',
-        releaseYear: 2024,
-        genre: 'Test Genre',
-        description: const Value('Test Description'),
-        coverImagePath: const Value('path/to/cover.jpg'),
-        format: Value(MovieFormat.dvd),
-        ageRating: Value(AgeRating.teen),
+      String title = 'Test Movie';
+      String director = 'Test Director';
+      String releaseYear = "2024";
+      String genre = 'Test Genre';
+      String description = 'Test Description';
+      String coverImagePath = 'path/to/cover.jpg';
+      MovieFormat format = MovieFormat.dvd;
+      AgeRating ageRating = AgeRating.teen;
+      int? locationId = 5;
+      DateTime? addedDate = DateTime.now();
+
+      MoviesCompanion movie = MoviesCompanion(
+        title: Value(title),
+        director: Value(director),
+        releaseYear: Value(int.parse(releaseYear)),
+        genre: Value(genre),
+        description: Value(description),
+        coverImagePath: Value(coverImagePath),
+        format: Value(format),
+        ageRating: Value(ageRating),
+        locationId: Value(locationId),
+        addedDate: Value(addedDate),
       );
 
       when(mockDb.insertMovie(movie)).thenAnswer((_) async => 1);
-      
-      final id = await controller.addMovie(movie);
+
+      final id = await controller.addMovie(
+        title,
+        director,
+        int.parse(releaseYear),
+        genre,
+        description,
+        coverImagePath,
+        format,
+        ageRating,
+        locationId,
+        addedDate,
+      );
       expect(id, 1);
       verify(mockDb.insertMovie(movie)).called(1);
     });
@@ -75,7 +98,7 @@ void main() {
       );
 
       when(mockDb.updateMovie(movie)).thenAnswer((_) async => true);
-      
+
       final success = await controller.updateMovie(movie);
       expect(success, true);
       verify(mockDb.updateMovie(movie)).called(1);
@@ -83,9 +106,9 @@ void main() {
 
     test('deleteMovie calls database delete', () async {
       final controller = container.read(movieControllerProvider.notifier);
-      
+
       when(mockDb.deleteMovie(1)).thenAnswer((_) async => 1);
-      
+
       final result = await controller.deleteMovie(1);
       expect(result, 1);
       verify(mockDb.deleteMovie(1)).called(1);
@@ -93,7 +116,7 @@ void main() {
 
     test('getMovie calls database get', () async {
       final controller = container.read(movieControllerProvider.notifier);
-      
+
       final movie = Movie(
         id: 1,
         title: 'Test Movie',
@@ -109,7 +132,7 @@ void main() {
       );
 
       when(mockDb.getMovie(1)).thenAnswer((_) async => movie);
-      
+
       final result = await controller.getMovie(1);
       expect(result, movie);
       verify(mockDb.getMovie(1)).called(1);

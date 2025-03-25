@@ -45,7 +45,8 @@ void main() {
 
       when(mockDb.insertLocation(location)).thenAnswer((_) async => 1);
 
-      final id = await controller.addLocation(location);
+      final id = await controller.addLocation(
+          location.name.value, location.description.value);
       expect(id, equals(1));
       verify(mockDb.insertLocation(location)).called(1);
     });
@@ -85,7 +86,7 @@ void main() {
             createdAt: DateTime.now(),
           ));
 
-      final location = await container.read(locationProvider(1).future);
+      final location = await container.read(getLocationProvider(1).future);
       expect(location?.name, equals('Test Location'));
       verify(mockDb.getLocation(1)).called(1);
     });
@@ -98,7 +99,7 @@ void main() {
             createdAt: DateTime.now(),
           ));
 
-      final name = await container.read(locationNameProvider(1).future);
+      final name = await container.read(getLocationNameProvider(1).future);
       expect(name, equals('Test Location'));
       verify(mockDb.getLocation(1)).called(1);
     });
@@ -106,7 +107,7 @@ void main() {
     test('locationName provider returns Unknown Location for null', () async {
       when(mockDb.getLocation(1)).thenAnswer((_) async => null);
 
-      final name = await container.read(locationNameProvider(1).future);
+      final name = await container.read(getLocationNameProvider(1).future);
       expect(name, equals('Unknown Location'));
       verify(mockDb.getLocation(1)).called(1);
     });
