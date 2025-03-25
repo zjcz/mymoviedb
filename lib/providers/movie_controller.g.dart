@@ -6,7 +6,7 @@ part of 'movie_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$movieControllerHash() => r'82e0406f32f5245077c5c2d1684f97461ae2d21e';
+String _$movieControllerHash() => r'5e3f5df58281b6bb663138bb68120dc264ffe5ec';
 
 /// See also [MovieController].
 @ProviderFor(MovieController)

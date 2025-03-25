@@ -1,17 +1,23 @@
 import 'package:drift/drift.dart';
 
 enum MovieFormat {
-  dvd,
-  bluray,
-  online
+  dvd(niceName: "DVD"),
+  bluray(niceName: "Blu-ray"),
+  online(niceName: "Online");
+
+  final String niceName;
+  const MovieFormat({required this.niceName});
 }
 
 enum AgeRating {
-  universal,    // U in UK, G in US
-  parentalGuidance,  // PG
-  teen,    // 12/12A in UK, PG-13 in US
-  mature,  // 15 in UK, R in US
-  adult    // 18 in UK, NC-17 in US
+  universal(niceName: 'Universal (U)'), // U in UK, G in US
+  parentalGuidance(niceName: "Parental Guidance (PG)"), // PG
+  teen(niceName: "Teen (12)"), // 12/12A in UK, PG-13 in US
+  mature(niceName: "Mature (15)"), // 15 in UK, R in US
+  adult(niceName: "Adult (18)"); // 18 in UK, NC-17 in US
+
+  final String niceName;
+  const AgeRating({required this.niceName});
 }
 
 class MovieFormats extends TypeConverter<MovieFormat, String> {
@@ -64,8 +70,11 @@ class Movies extends Table {
   TextColumn get genre => text()();
   TextColumn get description => text().nullable()();
   TextColumn get coverImagePath => text().nullable()();
-  TextColumn get format => text().map(const MovieFormats()).withDefault(Constant('dvd'))();
-  TextColumn get ageRating => text().map(const AgeRatings()).withDefault(Constant('parentalGuidance'))();
+  TextColumn get format =>
+      text().map(const MovieFormats()).withDefault(Constant('dvd'))();
+  TextColumn get ageRating => text()
+      .map(const AgeRatings())
+      .withDefault(Constant('parentalGuidance'))();
   IntColumn get locationId => integer().nullable().references(Locations, #id)();
   DateTimeColumn get addedDate => dateTime().withDefault(currentDateAndTime)();
 }

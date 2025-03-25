@@ -1,3 +1,5 @@
+import 'package:drift/drift.dart';
+import 'package:mymoviedb/data/tables.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../data/database.dart';
 
@@ -13,8 +15,29 @@ class MovieController extends _$MovieController {
     return _databaseService.getAllMovies();
   }
 
-  Future<int> addMovie(MoviesCompanion movie) async {
-    return _databaseService.insertMovie(movie);
+  Future<int> addMovie(
+      String title,
+      String director,
+      int releaseYear,
+      String genre,
+      String? description,
+      String? coverImagePath,
+      MovieFormat format,
+      AgeRating ageRating,
+      int? locationId,
+      [DateTime? addedDate]) async {
+    return _databaseService.insertMovie(MoviesCompanion(
+      title: Value(title),
+      director: Value(director),
+      releaseYear: Value(releaseYear),
+      genre: Value(genre),
+      description: Value(description),
+      coverImagePath: Value(coverImagePath),
+      format: Value(format),
+      ageRating: Value(ageRating),
+      locationId: Value(locationId),
+      addedDate: Value(addedDate ?? DateTime.now()),
+    ));
   }
 
   Future<bool> updateMovie(Movie movie) {

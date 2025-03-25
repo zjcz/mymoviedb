@@ -6,7 +6,7 @@ part of 'location_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$locationHash() => r'f5ce09ade9253ab04ff4f4392a6fb677fd87b4d1';
+String _$getLocationHash() => r'af1a8e1fa973411c29c8884f3908a52f3047a644';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,27 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [location].
-@ProviderFor(location)
-const locationProvider = LocationFamily();
+/// See also [getLocation].
+@ProviderFor(getLocation)
+const getLocationProvider = GetLocationFamily();
 
-/// See also [location].
-class LocationFamily extends Family<AsyncValue<Location?>> {
-  /// See also [location].
-  const LocationFamily();
+/// See also [getLocation].
+class GetLocationFamily extends Family<AsyncValue<Location?>> {
+  /// See also [getLocation].
+  const GetLocationFamily();
 
-  /// See also [location].
-  LocationProvider call(
+  /// See also [getLocation].
+  GetLocationProvider call(
     int id,
   ) {
-    return LocationProvider(
+    return GetLocationProvider(
       id,
     );
   }
 
   @override
-  LocationProvider getProviderOverride(
-    covariant LocationProvider provider,
+  GetLocationProvider getProviderOverride(
+    covariant GetLocationProvider provider,
   ) {
     return call(
       provider.id,
@@ -68,31 +68,32 @@ class LocationFamily extends Family<AsyncValue<Location?>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'locationProvider';
+  String? get name => r'getLocationProvider';
 }
 
-/// See also [location].
-class LocationProvider extends AutoDisposeFutureProvider<Location?> {
-  /// See also [location].
-  LocationProvider(
+/// See also [getLocation].
+class GetLocationProvider extends AutoDisposeFutureProvider<Location?> {
+  /// See also [getLocation].
+  GetLocationProvider(
     int id,
   ) : this._internal(
-          (ref) => location(
-            ref as LocationRef,
+          (ref) => getLocation(
+            ref as GetLocationRef,
             id,
           ),
-          from: locationProvider,
-          name: r'locationProvider',
+          from: getLocationProvider,
+          name: r'getLocationProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$locationHash,
-          dependencies: LocationFamily._dependencies,
-          allTransitiveDependencies: LocationFamily._allTransitiveDependencies,
+                  : _$getLocationHash,
+          dependencies: GetLocationFamily._dependencies,
+          allTransitiveDependencies:
+              GetLocationFamily._allTransitiveDependencies,
           id: id,
         );
 
-  LocationProvider._internal(
+  GetLocationProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -106,12 +107,12 @@ class LocationProvider extends AutoDisposeFutureProvider<Location?> {
 
   @override
   Override overrideWith(
-    FutureOr<Location?> Function(LocationRef provider) create,
+    FutureOr<Location?> Function(GetLocationRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: LocationProvider._internal(
-        (ref) => create(ref as LocationRef),
+      override: GetLocationProvider._internal(
+        (ref) => create(ref as GetLocationRef),
         from: from,
         name: null,
         dependencies: null,
@@ -124,12 +125,12 @@ class LocationProvider extends AutoDisposeFutureProvider<Location?> {
 
   @override
   AutoDisposeFutureProviderElement<Location?> createElement() {
-    return _LocationProviderElement(this);
+    return _GetLocationProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is LocationProvider && other.id == id;
+    return other is GetLocationProvider && other.id == id;
   }
 
   @override
@@ -143,42 +144,42 @@ class LocationProvider extends AutoDisposeFutureProvider<Location?> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin LocationRef on AutoDisposeFutureProviderRef<Location?> {
+mixin GetLocationRef on AutoDisposeFutureProviderRef<Location?> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
-class _LocationProviderElement
-    extends AutoDisposeFutureProviderElement<Location?> with LocationRef {
-  _LocationProviderElement(super.provider);
+class _GetLocationProviderElement
+    extends AutoDisposeFutureProviderElement<Location?> with GetLocationRef {
+  _GetLocationProviderElement(super.provider);
 
   @override
-  int get id => (origin as LocationProvider).id;
+  int get id => (origin as GetLocationProvider).id;
 }
 
-String _$locationNameHash() => r'4a33a789b536ed3937115f0b7a4f7cb640483cf8';
+String _$getLocationNameHash() => r'c0fc758f608738928f83fee32d8d8d6658b01044';
 
-/// See also [locationName].
-@ProviderFor(locationName)
-const locationNameProvider = LocationNameFamily();
+/// See also [getLocationName].
+@ProviderFor(getLocationName)
+const getLocationNameProvider = GetLocationNameFamily();
 
-/// See also [locationName].
-class LocationNameFamily extends Family<AsyncValue<String>> {
-  /// See also [locationName].
-  const LocationNameFamily();
+/// See also [getLocationName].
+class GetLocationNameFamily extends Family<AsyncValue<String>> {
+  /// See also [getLocationName].
+  const GetLocationNameFamily();
 
-  /// See also [locationName].
-  LocationNameProvider call(
+  /// See also [getLocationName].
+  GetLocationNameProvider call(
     int id,
   ) {
-    return LocationNameProvider(
+    return GetLocationNameProvider(
       id,
     );
   }
 
   @override
-  LocationNameProvider getProviderOverride(
-    covariant LocationNameProvider provider,
+  GetLocationNameProvider getProviderOverride(
+    covariant GetLocationNameProvider provider,
   ) {
     return call(
       provider.id,
@@ -197,32 +198,32 @@ class LocationNameFamily extends Family<AsyncValue<String>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'locationNameProvider';
+  String? get name => r'getLocationNameProvider';
 }
 
-/// See also [locationName].
-class LocationNameProvider extends AutoDisposeFutureProvider<String> {
-  /// See also [locationName].
-  LocationNameProvider(
+/// See also [getLocationName].
+class GetLocationNameProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [getLocationName].
+  GetLocationNameProvider(
     int id,
   ) : this._internal(
-          (ref) => locationName(
-            ref as LocationNameRef,
+          (ref) => getLocationName(
+            ref as GetLocationNameRef,
             id,
           ),
-          from: locationNameProvider,
-          name: r'locationNameProvider',
+          from: getLocationNameProvider,
+          name: r'getLocationNameProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$locationNameHash,
-          dependencies: LocationNameFamily._dependencies,
+                  : _$getLocationNameHash,
+          dependencies: GetLocationNameFamily._dependencies,
           allTransitiveDependencies:
-              LocationNameFamily._allTransitiveDependencies,
+              GetLocationNameFamily._allTransitiveDependencies,
           id: id,
         );
 
-  LocationNameProvider._internal(
+  GetLocationNameProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -236,12 +237,12 @@ class LocationNameProvider extends AutoDisposeFutureProvider<String> {
 
   @override
   Override overrideWith(
-    FutureOr<String> Function(LocationNameRef provider) create,
+    FutureOr<String> Function(GetLocationNameRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: LocationNameProvider._internal(
-        (ref) => create(ref as LocationNameRef),
+      override: GetLocationNameProvider._internal(
+        (ref) => create(ref as GetLocationNameRef),
         from: from,
         name: null,
         dependencies: null,
@@ -254,12 +255,12 @@ class LocationNameProvider extends AutoDisposeFutureProvider<String> {
 
   @override
   AutoDisposeFutureProviderElement<String> createElement() {
-    return _LocationNameProviderElement(this);
+    return _GetLocationNameProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is LocationNameProvider && other.id == id;
+    return other is GetLocationNameProvider && other.id == id;
   }
 
   @override
@@ -273,21 +274,21 @@ class LocationNameProvider extends AutoDisposeFutureProvider<String> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin LocationNameRef on AutoDisposeFutureProviderRef<String> {
+mixin GetLocationNameRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `id` of this provider.
   int get id;
 }
 
-class _LocationNameProviderElement
-    extends AutoDisposeFutureProviderElement<String> with LocationNameRef {
-  _LocationNameProviderElement(super.provider);
+class _GetLocationNameProviderElement
+    extends AutoDisposeFutureProviderElement<String> with GetLocationNameRef {
+  _GetLocationNameProviderElement(super.provider);
 
   @override
-  int get id => (origin as LocationNameProvider).id;
+  int get id => (origin as GetLocationNameProvider).id;
 }
 
 String _$locationControllerHash() =>
-    r'b8a0be157c5557cb3298ed4f520866e8bf33af84';
+    r'74fb2132c83b86e73d96c7fed4f79dbbed07278f';
 
 /// See also [LocationController].
 @ProviderFor(LocationController)

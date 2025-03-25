@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../data/database.dart';
@@ -10,12 +11,14 @@ class LocationController extends _$LocationController {
 
   @override
   Stream<List<Location>> build() {
-    //_databaseService = ref.read(MovieDatabase.provider);
     return _databaseService.getAllLocations();
   }
 
-  Future<int> addLocation(LocationsCompanion location) async {
-    return _databaseService.insertLocation(location);
+  Future<int> addLocation(String name, String? description) async {
+    return _databaseService.insertLocation(LocationsCompanion(
+      name: Value(name),
+      description: Value(description),
+    ));
   }
 
   Future<bool> updateLocation(Location location) async {
@@ -28,12 +31,12 @@ class LocationController extends _$LocationController {
 }
 
 @riverpod
-Future<Location?> location(Ref ref, int id) {
+Future<Location?> getLocation(Ref ref, int id) {
   return ref.watch(MovieDatabase.provider).getLocation(id);
 }
 
 @riverpod
-Future<String> locationName(Ref ref, int id) async {
-  final location = await ref.watch(locationProvider(id).future);
+Future<String> getLocationName(Ref ref, int id) async {
+  final location = await ref.watch(getLocationProvider(id).future);
   return location?.name ?? 'Unknown Location';
 }
